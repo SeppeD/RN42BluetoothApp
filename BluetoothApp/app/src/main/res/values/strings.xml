@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bluetooth App</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="temperature">%s°C</string>
+    <string name="humidity">%s\%%</string>
+    <string name="nul">0</string>
+</resources>

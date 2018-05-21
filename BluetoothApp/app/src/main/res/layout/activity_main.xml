@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:id="@+id/linear">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="60sp"
+            android:text="@string/nul"
+            android:id="@+id/tempTxt"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="60sp"
+            android:id="@+id/humTxt"
+            android:text="@string/nul"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+    <Button
+        android:layout_below="@id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dataBtn"
+        android:layout_marginTop="16dp"
+        android:text="Get Data"/>
+
+
+    <Button
+        android:layout_margin="16dp"
+        android:layout_below="@id/dataBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/ledBtn"
+        android:background="@drawable/led_background" />
+
+
+
+</RelativeLayout>
