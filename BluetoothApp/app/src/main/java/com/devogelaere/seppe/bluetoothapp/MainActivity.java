@@ -13,10 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,11 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLedChecked(String s) {
-        if (s.substring(0,1).equals("1")) {
-            ledState = true;
-        } else {
-            ledState = false;
-        }
+        ledState = s.substring(0, 1).equals("1");
         setLedButton();
     }
 
@@ -123,51 +117,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTempHumidity() {
-        if (btSocket!=null)
-        {
-            try
-            {
+        if (btSocket!=null) {
+            try {
                 inputStream = btSocket.getInputStream();
                 btSocket.getOutputStream().write("temp".getBytes());
 
-                beginListenForData();
-
-            }
-            catch (IOException e)
-            {
+                dataListener();
+            } catch (IOException e) {
                 msg("Error");
             }
         }
     }
 
-    private void changeLed()
-    {
-        if (btSocket!=null)
-        {
-            try
-            {
-                btSocket.getOutputStream().write("changeLed".toString().getBytes());
+    private void changeLed() {
+        if (btSocket!=null) {
+            try {
+                btSocket.getOutputStream().write("changeLed".getBytes());
                 ledState = !ledState;
                 setLedButton();
             }
-            catch (IOException e)
-            {
+            catch (IOException e) {
                 msg("Error");
             }
         }
     }
 
-    private void disconnect()
-    {
-        if (btSocket!=null)
-        {
-            try
-            {
+    private void disconnect() {
+        if (btSocket!=null) {
+            try {
                 btSocket.close();
                 msg("Disconnected");
+            } catch (IOException e) {
+                msg("Error");
             }
-            catch (IOException e)
-            { msg("Error");}
         }
         finish();
     }
@@ -177,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
 
-    void beginListenForData()
+    void dataListener()
     {
         final Handler handler = new Handler();
         final byte delimiter = 10; //This is the ASCII code for a newline character
@@ -187,31 +169,22 @@ public class MainActivity extends AppCompatActivity {
         readBuffer = new byte[1024];
         workerThread = new Thread(new Runnable()
         {
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted() && !isBtConnected)
-                {
-                    try
-                    {
+            public void run() {
+                while(!Thread.currentThread().isInterrupted() && !isBtConnected) {
+                    try {
                         int bytesAvailable = inputStream.available();
-                        if(bytesAvailable > 0)
-                        {
+                        if(bytesAvailable > 0) {
                             byte[] packetBytes = new byte[bytesAvailable];
-                            inputStream.read(packetBytes);
-                            for(int i=0;i<bytesAvailable;i++)
-                            {
+                            for(int i=0;i<bytesAvailable;i++) {
                                 byte b = packetBytes[i];
-                                if(b == delimiter)
-                                {
+                                if(b == delimiter) {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
 
-                                    handler.post(new Runnable()
-                                    {
-                                        public void run()
-                                        {
+                                    handler.post(new Runnable() {
+                                        public void run() {
                                             try {
                                                 String[] separated = data.split(";");
                                                 if (separated[0].equals("DHT11")) {
@@ -224,8 +197,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
-                                else
-                                {
+                                else {
                                     readBuffer[readBufferPosition++] = b;
                                 }
                             }

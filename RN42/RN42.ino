@@ -9,7 +9,7 @@ void setup() {
   pinMode(4, OUTPUT);
   pinMode(8, OUTPUT);
   Serial.begin(115200);
-  while (!Serial) { }
+  while (!Serial) { } //Moet weg indien geen seriële poort van de Arduino gebruikt wordt.
   Serial1.begin(115200);
   while (!Serial1) { }
 }
